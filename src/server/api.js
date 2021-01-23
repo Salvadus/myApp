@@ -38,6 +38,7 @@ module.exports = conect =>{
           client.query('SELECT id,CaseNumber FROM Case;', (err, res) => {
             if (err) throw err;
             for (let row of res.rows) {
+                alert(row);
               console.log(JSON.stringify(row));
             }
             client.end();
