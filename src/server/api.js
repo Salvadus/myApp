@@ -19,3 +19,31 @@ app.listen(PORT, () =>
         `✅  API Server started: http://${HOST}:${PORT}/api/v1/endpoint`
     )
 );
+
+const { Client } = require('pg');
+module.exports = conect =>{
+    
+    conect.get('/data/Case', (req, res) => {
+
+        let cases = [];
+        const client = new Client({
+            connectionString: process.env.DATABASE_URL,
+            ssl: {
+              rejectUnauthorized: false
+            }
+          });
+          
+          client.connect();
+          
+          client.query('SELECT id,CaseNumber FROM Case;', (err, res) => {
+            if (err) throw err;
+            for (let row of res.rows) {
+              console.log(JSON.stringify(row));
+            }
+            client.end();
+          });
+          
+        res.json({ status: 'ok' });
+    });
+
+};
